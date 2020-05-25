@@ -1,16 +1,8 @@
 from datetime import datetime
-import requests
 
 from bs4 import BeautifulSoup
 
-
-def get_html(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.text
-    except (requests.RequestException, ValueError):
-        return None
+from utils import get_html
 
 
 class M24_accidents(object):
@@ -180,18 +172,36 @@ class VM_accidents(object):
 
 
 if __name__ == "__main__":
-    parser = VM_accidents()
-    feed = parser.get_feed()
+    print(
+        """Проверка работы парсеров. Доступны парсеры для сайтов:
+      m24.ru - 1;
+      mosday.ru - 2:
+      vm.ru - 3.
 
-    for news in feed:
+Для проверки введите номер парсера (1, 2 или 3), чтобы выйти, нажмите Enter.
+        """)
+    inp = input()
+    if inp in ['1', '2', '3']:
+        if inp == '1':
+            parser = M24_accidents()
+        elif inp == '2':
+            parser = Mosday_accidents()
+        elif inp == '3':
+            parser = VM_accidents()
+        parser = VM_accidents()
+        feed = parser.get_feed()
+
+        for news in feed:
+            print('----------------------')
+            print(news)
+            print()
+            text = parser.get_post(news['link'])
+            if text:
+                if len(text) > 250:
+                    print(text)
+                else:
+                    print("Полный текст новости в источнике.")
         print('----------------------')
-        print(news)
-        print()
-        text = parser.get_post(news['link'])
-        if text:
-            if len(text) > 250:
-                print(text)
-            else:
-                print('Полный текст новости в источнике.')
-    print('----------------------')
-    print(len(feed))
+        print(len(feed))
+    else:
+        print("Номер парсера не введен.\nВыход...")

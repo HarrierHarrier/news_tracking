@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <h1>{{ header }}</h1>
+            <h3 style="color:rgb(90, 90, 90)">Данный сервис существует, чтобу помочь вам узнат, что происходит вокруг вас. Нажмите "Найти новости!", чтобы продолжить.</h3>
+            <button type="button" class="btn btn-dark"><a style="color: floralwhite;" href="{{ url_for('location_input') }}">Найти новости!</a></button>
+        </div>
+    </div>
+{% endblock %}
